@@ -34,11 +34,13 @@ require_once(dirname(__FILE__) . '/../locallib.php');
 class report {
     public static function generate_report() {
         global $DB;
-        $sql = "SELECT actp.checktype, actp.lastchecked, actp.status, actp.statustext,
-            ac.contenthash, ac.pathnamehash, ac.hastext, ac.hastitle, ac.haslanguage,
-            ac.hasbookmarks, ac.istagged, ac.pagecount
-        FROM {local_a11y_check_type_pdf} actp
-        INNER JOIN {local_a11y_check} ac ON actp.id=ac.scanid";
+        $sql = "SELECT f.scanid, f.contenthash as contenthash,"
+            . "f.pathnamehash as pathnamehash, f.hastext, f.hastitle, f.haslanguage,"
+            . "f.istagged, f.pagecount, f.hasbookmarks, c.status, c.statustext,"
+            . "c.lastchecked, files.filename "
+            . "FROM {local_a11y_check_type_pdf} f "
+            . "INNER JOIN {local_a11y_check} c ON c.id = f.scanid "
+            . "INNER JOIN {files} files ON files.contenthash=f.contenthash";
         $limit = 1000;
         $files = $DB->get_records_sql($sql, null, 0, $limit);
         return $files;
