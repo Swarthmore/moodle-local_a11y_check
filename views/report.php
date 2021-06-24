@@ -19,6 +19,7 @@ require_once(dirname(__FILE__) . '/../classes/report.php');
 
 require_admin();
 
+$PAGE->set_context(context_system::instance());
 $PAGE->set_url('/local/a11y_check/views/report.php');
 $PAGE->set_pagelayout('report');
 
